@@ -1,0 +1,2 @@
+./src/renderer/store/modules/room.js
+./src/renderer/lib/electron-rtc-client.js

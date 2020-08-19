@@ -1,0 +1,139 @@
+{
+  "name": "classroom-vue",
+  "version": "1.2.0",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development NODE_PLATFORM=web vue-cli-service serve",
+    "web:build": "cross-env NODE_ENV=production NODE_PLATFORM=electron vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "electron:web": "cross-env NODE_ENV=development vue-cli-service serve",
+    "edev": "cross-env NODE_ENV=development ELECTRON_START_URL=http://localhost:8090 NODE_PLATFORM=electron concurrently \"npm run electron:web\" \"wait-on http://localhost:8090 && npm run dev:electron\"",
+    "dev:electron": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "electron:build": "yarn web:build && electron-webpack && electron-builder",
+    "build:win": "yarn electron:build",
+    "build:mac": "yarn add white-web-sdk@2.6.4 && yarn electron:build",
+    "build": "yarn build:mac"
+  },
+  "dependencies": {
+    "@netless/cursor-adapter": "0.0.6",
+    "compressing": "^1.5.1",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
+    "hummer-rts-sdk": "^3.2.1",
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "register-service-worker": "^1.7.1",
+    "source-map-support": "^0.5.19",
+    "thunderbolt-electron-sdk": "^2.9.0",
+    "thunderbolt-web-sdk": "^2.4.0",
+    "vue": "^2.6.11",
+    "vue-color": "^2.7.1",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0",
+    "white-web-sdk": "2.6.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-pwa": "~4.4.0",
+    "@vue/cli-plugin-router": "~4.4.0",
+    "@vue/cli-plugin-vuex": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "electron": "^5.0.8",
+    "electron-builder": "^22.7.0",
+    "electron-webpack": "^2.8.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "vue-template-compiler": "^2.6.11",
+    "wait-on": "^5.1.0"
+  },
+  "build": {
+    "productName": "ClassRoom",
+    "appId": "com.electron.jocloud.classroom",
+    "directories": {
+      "output": "artifacts"
+    },
+    "files": [
+      "dist/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "src/renderer/assets/img/logo/TED.png",
+      "target": [
+        "dmg"
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "category": "public.app-category.developer-tools",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "ClassRoom acquire your microphone permission",
+        "NSCameraUsageDescription": "ClassRoom acquire your camera permission"
+      }
+    },
+    "win": {
+      "icon": "src/renderer/assets/img/logo/TED.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "src/renderer/assets/img/logo/TED.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "云教育"
+    }
+  },
+  "electronWebpack": {
+    "main": {
+      "extraEntries": [
+        "@/preload.js"
+      ],
+      "sourceDirectory": "src/main",
+      "webpackConfig": "webpack.additions.js"
+    },
+    "renderer": null
+  },
+  "thunder_electron": {
+    "electron_version": "5.0.8"
+  }
+}
